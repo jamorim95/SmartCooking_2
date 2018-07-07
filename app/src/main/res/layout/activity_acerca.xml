@@ -1,0 +1,238 @@
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView"
+                    style="?android:listSeparatorTextViewStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/acerca_title"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    android:background="@color/colorPrimary"
+                    android:text="@string/acercaNos_label"
+                    android:textAlignment="gravity"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:gravity="center_vertical"
+                    android:text="@string/acercaNos_texto"
+                    android:textColor="@color/text_color"
+                    android:fontFamily="@font/merriweather_light"
+                    android:lineSpacingExtra="5sp"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:gravity="start|top"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/fb_label"
+                        android:textColor="@color/text_color"
+                        android:fontFamily="@font/merriweather_light"
+                        android:lineSpacingExtra="5sp"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/fb_link"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/merriweather_light"
+                        android:lineSpacingExtra="5sp"
+                        android:textColor="@color/text_color"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:gravity="start|top"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/twitter_label"
+                        android:textColor="@color/text_color"
+                        android:fontFamily="@font/merriweather_light"
+                        android:lineSpacingExtra="5sp"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/twitter_link"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/merriweather_light"
+                        android:lineSpacingExtra="5sp"
+                        android:textColor="@color/text_color"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    style="?android:listSeparatorTextViewStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/acerca_title"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    android:background="@color/colorPrimary"
+                    android:text="@string/parceiros_label"
+                    android:textAlignment="gravity"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/parceiros_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:gravity="center_vertical"
+                    android:text="@string/parceiros_texto"
+                    android:textColor="@color/text_color"
+                    android:fontFamily="@font/merriweather_light"
+                    android:lineSpacingExtra="5sp"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/parceiros1_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:fontFamily="@font/merriweather_light"
+                    android:gravity="center_vertical"
+                    android:lineSpacingExtra="5sp"
+                    android:textColor="@color/text_color"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/parceiros2_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:fontFamily="@font/merriweather_light"
+                    android:gravity="center_vertical"
+                    android:lineSpacingExtra="5sp"
+                    android:textColor="@color/text_color"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/parceiros3_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:fontFamily="@font/merriweather_light"
+                    android:gravity="center_vertical"
+                    android:lineSpacingExtra="5sp"
+                    android:textColor="@color/text_color"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    style="?android:listSeparatorTextViewStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/acerca_title"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    android:background="@color/colorPrimary"
+                    android:text="@string/outros_label"
+                    android:textAlignment="gravity"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:gravity="start|top"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/icons_label"
+                        android:textColor="@color/text_color"
+                        android:fontFamily="@font/merriweather_light"
+                        android:lineSpacingExtra="5sp"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/icons_link"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_color"
+                        android:fontFamily="@font/merriweather_light"
+                        android:lineSpacingExtra="5sp"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Side navigation drawer UI -->
+    <ListView
+        android:id="@+id/navList"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="#262626" />
+
+</android.support.v4.widget.DrawerLayout>

@@ -1,0 +1,6 @@
+- As cores do botões das categorias estao estranhos
+- Meter da API para a base de dados
+- Verificar na API se há uma versão nova de receitas
+- O Main
+- Os detalhes de uma receita
+- O algoritmo da pesquisa de receitas
