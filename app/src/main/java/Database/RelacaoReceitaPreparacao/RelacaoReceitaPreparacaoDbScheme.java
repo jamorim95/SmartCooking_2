@@ -1,8 +1,8 @@
-package Database;
+package Database.RelacaoReceitaPreparacao;
 
-public class RelacaoReceitaPreparacao {
+public class RelacaoReceitaPreparacaoDbScheme {
     public static final class  RelacaoReceitaPreparacaoTable{
-        public static final String NAME = " RelacaoReceitaPreparacao";
+        public static final String NAME = " RelacaoReceitaPreparacaoDbScheme";
 
         public static final class Cols{
             public static final String ID_RECEITA = "id_receita";
