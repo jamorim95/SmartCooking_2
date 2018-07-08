@@ -8,7 +8,7 @@ public class ReceitaDbScheme {
             public static final String ID = "id";
             public static final String NOME = "nome";
             public static final String DIFICULDADE = "dificuldade";
-            public static final String TEMPO_PREPARACAO = "tempo";
+            public static final String TEMPO_PREPARACAO = "tempo";      // em minutos
             public static final String CATEGORIA = "categoria";
             public static final String FORNECEDOR = "fornecedor";
             public static final String IMAGEM = "imagem";
