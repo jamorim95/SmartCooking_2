@@ -40,6 +40,7 @@ public class SplashScreen extends AppCompatActivity {
 
 
         if(haveNetworkConnection()) {
+            System.out.println(">>>>> INTERNET DETECTED");
             requestQueue = Volley.newRequestQueue(this); // This setups up a new request queue which we will need to make HTTP requests.
             getRepoList();
 
@@ -67,6 +68,7 @@ public class SplashScreen extends AppCompatActivity {
             }, SPLASH_TIME_OUT);
         }else {
             crash("Ocorreu um erro.\nCertifique-se que tem coneção à internet.");
+            System.out.println(">>>>> INTERNET NOT DETECTED");
         }
     }
 
@@ -84,6 +86,8 @@ public class SplashScreen extends AppCompatActivity {
                     HttpsURLConnection myConnection =
                             (HttpsURLConnection) githubEndpoint.openConnection();
 
+                    System.out.println(">>>>>>>>>>> antes de responseCode==200");
+                    System.out.println(">>>>>>>>> responseCode == " + myConnection.getResponseCode());
                     if (myConnection.getResponseCode() == 200) {
                         // Success
                         InputStream responseBody = myConnection.getInputStream();
@@ -91,6 +95,7 @@ public class SplashScreen extends AppCompatActivity {
                                 new InputStreamReader(responseBody, "UTF-8");
                         JsonReader jsonReader = new JsonReader(responseBodyReader);
 
+                        System.out.println(">>>>>>>>>>> antes de ParseJson()");
                         parseJson(jsonReader);
                         if(lista_receitas.size() == 0){
                             crash("Ocorreu um algum tipo de erro.");
@@ -98,6 +103,7 @@ public class SplashScreen extends AppCompatActivity {
                     } else {
                         // Error handling code goes here
                         error = true;
+                        System.out.println(">>>>>>>>>>> else de responseCode==200");
                     }
 
                 } catch (IOException e) {
@@ -109,7 +115,7 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void parseJson(JsonReader jsonReader) {
-        System.out.println("Chegou Aqui");
+        System.out.println(">>>>>>>>>>>>>>>>> Chegou Aqui");
         try {
             lista_receitas = new ArrayList<>();
             List<String> array;
@@ -182,7 +188,7 @@ public class SplashScreen extends AppCompatActivity {
             error = true;
         }
 
-        System.out.println("Sera que chegou aqui?");
+        System.out.println(">>>>>>>>>>> Sera que chegou aqui?");
 
         for (int i=0;i<lista_receitas.size();i++){
             System.out.println(lista_receitas.get(i));
