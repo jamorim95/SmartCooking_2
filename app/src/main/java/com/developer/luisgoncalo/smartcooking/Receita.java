@@ -15,7 +15,7 @@ public class Receita implements Serializable,Comparable<Receita> {
     private String categoria;
     private String fornecedor;
     private List<String> preparacao;
-    private List<String> ingredientes;
+    private List<String> ingredientes;  // são os os ID's ?
     private String imagem;
     private List<String> ingredientes_simples;
 
