@@ -24,6 +24,8 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import Database.DatabaseOperations;
+
 public class SplashScreen extends AppCompatActivity {
     //TODO: Se não for buscar nada à API não entra no if do erro porque chega lá antes de alterar a flag
 
@@ -190,9 +192,16 @@ public class SplashScreen extends AppCompatActivity {
 
         System.out.println(">>>>>>>>>>> Sera que chegou aqui?");
 
+        //TODO: DatabaseOperations operacoesDB = new DatabaseOperations(getApplicationContext());
+        //TODO: operacoesDB.apagarTabelas(DatabaseOperations.TODAS_TABELAS);
+
         for (int i=0;i<lista_receitas.size();i++){
-            System.out.println(lista_receitas.get(i));
+            Receita r = lista_receitas.get(i);
+            System.out.println(r);
+            //TODO: operacoesDB.inserirReceita(r);
         }
+
+
     }
 
     private void crash(String tipo){
