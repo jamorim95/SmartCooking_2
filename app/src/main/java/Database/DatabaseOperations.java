@@ -192,4 +192,6 @@ public class DatabaseOperations {
         mDatabase_relacaoReceitaIngredientes.close();
         mDatabase_relacaoReceitaPreparacao.close();
     }
+
+
 }
