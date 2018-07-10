@@ -154,6 +154,7 @@ class MyAdapter extends BaseAdapter{
             }
 
             //TODO:  ordenar a lista de receitas por ordem alfabética ???
+            //TODO:  ou ordenar pelas que têm um match "maior"? (Como fazer isso... ?)
         }
         notifyDataSetChanged();
     }
