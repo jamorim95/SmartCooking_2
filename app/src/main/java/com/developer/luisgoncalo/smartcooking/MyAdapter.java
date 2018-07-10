@@ -152,7 +152,7 @@ class MyAdapter extends BaseAdapter{
                     }
                 }
             }
-
+s
             //TODO:  ordenar a lista de receitas por ordem alfabética ???
             //TODO:  ou ordenar pelas que têm um match "maior"? (Como fazer isso... ?)
         }
