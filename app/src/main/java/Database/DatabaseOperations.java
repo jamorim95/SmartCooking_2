@@ -205,7 +205,12 @@ public class DatabaseOperations {
     /************   LEITURA EM ARRAY_LIST   ************/
     /***************************************************/
 
-
+    /*
+    *  @param listaGeral arrayList com todas as receitas da base de dados
+    *  @param ingredientesPesquisados arrayList com os ingredientes pesquisados
+    *  @return arrayList com as receitas encontradas
+    *
+    * */
     public ArrayList<Receita> procurarPorIngredientes(ArrayList<Receita> listaGeral, ArrayList<String> ingredientesPesquisados){
 
         ArrayList<Receita> lista = new ArrayList<Receita>();
@@ -290,6 +295,12 @@ public class DatabaseOperations {
         return target;
     }
 
+    /*
+     *  @param listaGeral arrayList com todas as receitas da base de dados
+     *  @param categoria string com a categoria pesquisada
+     *  @return arrayList com as receitas encontradas
+     *
+     * */
     public ArrayList<Receita> procurarPorCategoria(ArrayList<Receita> listaGeral, String categoria){
         ArrayList<Receita> lista = new ArrayList<Receita>();
 

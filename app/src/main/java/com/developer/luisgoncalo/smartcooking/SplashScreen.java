@@ -192,7 +192,7 @@ public class SplashScreen extends AppCompatActivity {
 
         System.out.println(">>>>>>>>>>> Sera que chegou aqui?");
 
-        /*
+        /
         private static final String PREFS_NAME = "smartcooking_prefsName";
         private static final String PREFS_Db_VERSION = "smartcooking_Db_versao";
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
@@ -205,7 +205,7 @@ public class SplashScreen extends AppCompatActivity {
             }
             settings.edit().putInt(PREFS_Db_VERSION, versao_API).apply();
 
-            //TODO: DatabaseOperations operacoesDB = new DatabaseOperations(getApplicationContext());
+            DatabaseOperations operacoesDB = new DatabaseOperations(getApplicationContext());
             //TODO: operacoesDB.apagarTabelas(DatabaseOperations.TODAS_TABELAS);
 
             for (int i=0;i<lista_receitas.size();i++){
