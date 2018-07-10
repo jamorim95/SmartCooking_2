@@ -192,7 +192,7 @@ public class SplashScreen extends AppCompatActivity {
 
         System.out.println(">>>>>>>>>>> Sera que chegou aqui?");
 
-        /
+        /*
         private static final String PREFS_NAME = "smartcooking_prefsName";
         private static final String PREFS_Db_VERSION = "smartcooking_Db_versao";
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
