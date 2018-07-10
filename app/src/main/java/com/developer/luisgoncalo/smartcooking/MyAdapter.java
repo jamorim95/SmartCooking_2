@@ -131,4 +131,32 @@ class MyAdapter extends BaseAdapter{
         notifyDataSetChanged();
     }
 
+    /*
+
+    public void filter(String... charText) {
+        //charText = charText.toLowerCase(Locale.getDefault());
+        receitas.clear();
+
+        if (charText.length == 0) {
+            receitas.addAll(arraylist);
+        }
+        else {
+            for (Receita r : arraylist)
+            {
+                for(String text : charText) {
+                    text=text.toLowerCase(Locale.getDefault());
+                    if (r.getNome().toLowerCase(Locale.getDefault()).contains(text)) {
+                        receitas.add(r);
+                        break;
+                    }
+                }
+            }
+
+            //TODO:  ordenar a lista de receitas por ordem alfabética ???
+        }
+        notifyDataSetChanged();
+    }
+
+    */
+
 }
