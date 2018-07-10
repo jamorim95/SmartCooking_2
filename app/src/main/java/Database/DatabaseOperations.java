@@ -275,6 +275,10 @@ public class DatabaseOperations {
             }
         }
 
+        for(Receita r : lista){
+            System.out.println(r);
+        }
+
         return lista;
     }
 
