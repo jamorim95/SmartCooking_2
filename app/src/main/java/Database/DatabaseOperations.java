@@ -207,8 +207,10 @@ public class DatabaseOperations {
 
 
     public ArrayList<Receita> procurarPorIngredientes(ArrayList<Receita> listaGeral, ArrayList<String> ingredientesPesquisados){
+
         ArrayList<Receita> lista = new ArrayList<Receita>();
         HashMap<Double, ArrayList<Receita>> mapa = new HashMap<Double, ArrayList<Receita>>();
+
         int num_match;          // nº de ingredientes da receita COM match na pesquisa
         int num_not_match;      // nº de ingredientes da receita SEM match na pesquisa
         int num_TOTAL_ingrs;    // nº TOTAL de ingredientes da receita
