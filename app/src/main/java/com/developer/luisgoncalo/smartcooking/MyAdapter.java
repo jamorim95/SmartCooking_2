@@ -133,17 +133,18 @@ class MyAdapter extends BaseAdapter{
 
     /*
 
-    public void filter(String... charText) {
-        //charText = charText.toLowerCase(Locale.getDefault());
+    public void filter(String charText) {   // aqui recebe a string pesquisada antes de estar separada por espaços
+        String[] charTexts;
         receitas.clear();
 
-        if (charText.length == 0) {
+        if (charText.length() == 0) {
             receitas.addAll(arraylist);
         }
         else {
+            charTexts = charText.split(" ");
             for (Receita r : arraylist)
             {
-                for(String text : charText) {
+                for(String text : charTexts) {
                     text=text.toLowerCase(Locale.getDefault());
                     if (r.getNome().toLowerCase(Locale.getDefault()).contains(text)) {
                         receitas.add(r);
