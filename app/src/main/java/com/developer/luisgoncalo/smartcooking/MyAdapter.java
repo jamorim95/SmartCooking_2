@@ -112,7 +112,7 @@ class MyAdapter extends BaseAdapter{
     }
 
     // Filter Class
-    public void filter(String charText) {
+    /*public void filter(String charText) {
         charText = charText.toLowerCase(Locale.getDefault());
         receitas.clear();
 
@@ -131,7 +131,7 @@ class MyAdapter extends BaseAdapter{
         notifyDataSetChanged();
     }
 
-    /*
+    */
 
     public void filter(String charText) {   // aqui recebe a string pesquisada antes de estar separada por espaços
         String[] charTexts;
@@ -155,13 +155,9 @@ class MyAdapter extends BaseAdapter{
                     }
                 }
             }
-
-            //TODO:  ordenar a lista de receitas por ordem alfabética ???
-            //TODO:  ou ordenar pelas que têm um match "maior"? (Como fazer isso... ?)
         }
         notifyDataSetChanged();
     }
 
-    */
 
 }
