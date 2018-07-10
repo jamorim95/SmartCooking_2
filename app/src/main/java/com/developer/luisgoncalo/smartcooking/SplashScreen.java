@@ -192,13 +192,35 @@ public class SplashScreen extends AppCompatActivity {
 
         System.out.println(">>>>>>>>>>> Sera que chegou aqui?");
 
-        //TODO: DatabaseOperations operacoesDB = new DatabaseOperations(getApplicationContext());
-        //TODO: operacoesDB.apagarTabelas(DatabaseOperations.TODAS_TABELAS);
+        /*
+        private static final String PREFS_NAME = "smartcooking_prefsName";
+        private static final String PREFS_Db_VERSION = "smartcooking_Db_versao";
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+
+        int versao_actual = settings.getInt(PREFS_Db_VERSION, -1);
+
+        if (versao_actual < versao_API) {
+            if(versao_actual!=-1){
+                settings.edit().remove(PREFS_Db_VERSION).apply();
+            }
+            settings.edit().putInt(PREFS_Db_VERSION, versao_API).apply();
+
+            //TODO: DatabaseOperations operacoesDB = new DatabaseOperations(getApplicationContext());
+            //TODO: operacoesDB.apagarTabelas(DatabaseOperations.TODAS_TABELAS);
+
+            for (int i=0;i<lista_receitas.size();i++){
+                Receita r = lista_receitas.get(i);
+                System.out.println(r);
+                //TODO: operacoesDB.inserirReceita(r);
+            }
+
+        }
+
+        */
 
         for (int i=0;i<lista_receitas.size();i++){
             Receita r = lista_receitas.get(i);
             System.out.println(r);
-            //TODO: operacoesDB.inserirReceita(r);
         }
 
 

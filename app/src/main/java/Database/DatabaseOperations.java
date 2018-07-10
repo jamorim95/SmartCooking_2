@@ -3,12 +3,14 @@ package Database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.developer.luisgoncalo.smartcooking.Receita;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -214,7 +216,7 @@ public class DatabaseOperations {
         double coeficiente_oredenacao;  // (num_match - num_NOT_match) / num_TOTAL_ingrs
         ArrayList<Double> lista_coefecientes_ordenacao = new ArrayList<Double>();
 
-        ArrayList<Receita> aux;
+        ArrayList<Receita> aux_listaReceitas;
 
         for(Receita r : listaGeral){
             num_match=0;
@@ -235,31 +237,51 @@ public class DatabaseOperations {
                 coeficiente_oredenacao = (num_match - num_not_match) / num_TOTAL_ingrs;
 
                 if(mapa.containsKey(coeficiente_oredenacao)){
-                    aux=mapa.get(coeficiente_oredenacao);
+                    aux_listaReceitas=mapa.get(coeficiente_oredenacao);
                 }else{
-                    aux = new ArrayList<Receita>();
+                    aux_listaReceitas = new ArrayList<Receita>();
                     lista_coefecientes_ordenacao.add(coeficiente_oredenacao);
                 }
-                aux.add(r);
-                mapa.put(coeficiente_oredenacao, aux);
+                aux_listaReceitas.add(r);
+                mapa.put(coeficiente_oredenacao, aux_listaReceitas);
 
             }
         }
 
         if(!lista_coefecientes_ordenacao.isEmpty()){
             // se for encontrada pelo menos 1 receita com pelo menos 1 ingrediente com match na pesquisa
-            //TODO: ordenar 'lista_coefecientes_ordenacao' por ordem decrescente
-            //TODO: procurar método eficiente de ordenação de 'doubles'
 
-            for(double coef : lista_coefecientes_ordenacao){
-                aux = mapa.get(coef);
-                //TODO:  ordenar 'aux' por ordem CRESCENTE do nº TOTAL de ingredientes
-                //TODO: procurar método eficiente de ordenação de 'inteiros'
-                mapa.put(coef, aux);
+            //TODO: testar este ordenamento dos coeficientes de ordenamento das receitas
+            double[] aux_array = getDoubleArray(lista_coefecientes_ordenacao);
+            Arrays.sort(aux_array);     // isto faz um Dual-Pivot Quicksort (avg: O(log(n))   worst: O(n^2)  )
+
+            System.out.println(">>>>>>>>>>>>>>> LISTA DE COEFICIENTES DE ORDENAMENTO DAS RECEITAS:");
+            for(double coef : aux_array){
+                System.out.println(">>>>>>>>>>>>>>>  " + coef);
+                aux_listaReceitas = mapa.get(coef);
+
+                //TODO:  testar este ordenamento
+                Collections.sort(aux_listaReceitas, new Comparator<Receita>() {
+                    @Override
+                    public int compare(Receita r1, Receita r2) {
+                        return r1.getIngredientes_simples().size() - r2.getIngredientes_simples().size();   // para ordem crescente
+                    }
+                });
+                mapa.put(coef, aux_listaReceitas);
+
+                lista.addAll(aux_listaReceitas);    // adidiona as receitas já ordenadas à lista que vai ser retornada
             }
         }
 
         return lista;
+    }
+
+    private double[] getDoubleArray(ArrayList<Double> lista){
+        double[] target = new double[lista.size()];
+        for (int i = 0; i < target.length; i++) {
+            target[i] = lista.get(i);
+        }
+        return target;
     }
 
     public ArrayList<Receita> procurarPorCategoria(ArrayList<Receita> listaGeral, String categoria){
