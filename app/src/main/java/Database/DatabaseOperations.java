@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.developer.luisgoncalo.smartcooking.Receita;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import Database.Ingredientes.IngredienteBaseHelper;
@@ -28,6 +29,10 @@ public class DatabaseOperations {
     public static final int TABELA_INGREDIENTES = 2;
     public static final int TABELA_RELACAO_RECEITA_INGREDIENTES = 3;
     public static final int TABELA_RELACAO_RECEITA_PREPARACAO = 4;
+
+    public static final int CRESCENTE = 1;
+    public static final int DECRESCENTE = -1;
+
 
     private SQLiteDatabase mDatabase_receitas;
     private SQLiteDatabase mDatabase_ingredientes;
@@ -191,6 +196,82 @@ public class DatabaseOperations {
         mDatabase_ingredientes.close();
         mDatabase_relacaoReceitaIngredientes.close();
         mDatabase_relacaoReceitaPreparacao.close();
+    }
+
+
+    /***************************************************/
+    /************   LEITURA EM ARRAY_LIST   ************/
+    /***************************************************/
+
+
+    public ArrayList<Receita> procurarPorIngredientes(ArrayList<Receita> listaGeral, ArrayList<String> ingredientesPesquisados){
+        ArrayList<Receita> lista = new ArrayList<Receita>();
+        HashMap<Double, ArrayList<Receita>> mapa = new HashMap<Double, ArrayList<Receita>>();
+        int num_match;          // nº de ingredientes da receita COM match na pesquisa
+        int num_not_match;      // nº de ingredientes da receita SEM match na pesquisa
+        int num_TOTAL_ingrs;    // nº TOTAL de ingredientes da receita
+
+        double coeficiente_oredenacao;  // (num_match - num_NOT_match) / num_TOTAL_ingrs
+        ArrayList<Double> lista_coefecientes_ordenacao = new ArrayList<Double>();
+
+        ArrayList<Receita> aux;
+
+        for(Receita r : listaGeral){
+            num_match=0;
+            num_not_match=0;
+            num_TOTAL_ingrs=r.getIngredientes_simples().size();
+
+            for(String ingr : r.getIngredientes_simples()){
+                if(ingredientesPesquisados.contains(ingr)){
+                    num_match++;
+                }else{
+                    num_not_match++;
+                }
+            }
+
+            if(num_match > 0){
+                // se esta receita tiver pelo menos 1 ingrediente com match na pesquisa
+
+                coeficiente_oredenacao = (num_match - num_not_match) / num_TOTAL_ingrs;
+
+                if(mapa.containsKey(coeficiente_oredenacao)){
+                    aux=mapa.get(coeficiente_oredenacao);
+                }else{
+                    aux = new ArrayList<Receita>();
+                    lista_coefecientes_ordenacao.add(coeficiente_oredenacao);
+                }
+                aux.add(r);
+                mapa.put(coeficiente_oredenacao, aux);
+
+            }
+        }
+
+        if(!lista_coefecientes_ordenacao.isEmpty()){
+            // se for encontrada pelo menos 1 receita com pelo menos 1 ingrediente com match na pesquisa
+            //TODO: ordenar 'lista_coefecientes_ordenacao' por ordem decrescente
+            //TODO: procurar método eficiente de ordenação de 'doubles'
+
+            for(double coef : lista_coefecientes_ordenacao){
+                aux = mapa.get(coef);
+                //TODO:  ordenar 'aux' por ordem CRESCENTE do nº TOTAL de ingredientes
+                //TODO: procurar método eficiente de ordenação de 'inteiros'
+                mapa.put(coef, aux);
+            }
+        }
+
+        return lista;
+    }
+
+    public ArrayList<Receita> procurarPorCategoria(ArrayList<Receita> listaGeral, String categoria){
+        ArrayList<Receita> lista = new ArrayList<Receita>();
+
+        for(Receita r : listaGeral){
+            if(r.getCategoria().toLowerCase().equals(categoria.toLowerCase())){
+                lista.add(r);
+            }
+        }
+
+        return lista;
     }
 
 
