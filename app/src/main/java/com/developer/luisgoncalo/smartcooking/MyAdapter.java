@@ -145,6 +145,9 @@ class MyAdapter extends BaseAdapter{
             for (Receita r : arraylist)
             {
                 for(String text : charTexts) {
+                    if(text.isEmpty()){ // para proteger contra os casos em que o user mete mais do que 1 espaço consecutivo na pesquisa
+                        continue;
+                    }
                     text=text.toLowerCase(Locale.getDefault());
                     if (r.getNome().toLowerCase(Locale.getDefault()).contains(text)) {
                         receitas.add(r);
