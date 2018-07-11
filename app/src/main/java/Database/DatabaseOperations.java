@@ -59,6 +59,7 @@ public class DatabaseOperations {
         long id_receita = receita.getId();
         List<String> lista_prep = receita.getPreparacao();
         List<String> lista_ingrs_nomes = receita.getIngredientes_simples();
+        System.out.println(receita);
 
         // fazer o mapeamento dos nomes dos ingredientes para os respectivos ID's
         List<Integer> lista_ingrs_ID = getListaIngredientesID(lista_ingrs_nomes);

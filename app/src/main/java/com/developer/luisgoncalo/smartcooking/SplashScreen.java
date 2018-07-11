@@ -1,36 +1,19 @@
 package com.developer.luisgoncalo.smartcooking;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.util.JsonReader;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.net.ssl.HttpsURLConnection;
-
-import Database.DatabaseOperations;
+import utils.GetReceitasTask;
 
 public class SplashScreen extends AppCompatActivity {
-    //TODO: Se não for buscar nada à API não entra no if do erro porque chega lá antes de alterar a flag
-
-    private String baseUrl = "https://demo3677899.mockable.io/receitas";
-    RequestQueue requestQueue; // This is our requests queue to process our HTTP requests.
 
     private List<Receita> lista_receitas;
     private boolean error = false;
@@ -40,15 +23,10 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if(haveNetworkConnection()) { // Have internet connection
 
-        if(haveNetworkConnection()) {
-            System.out.println(">>>>> INTERNET DETECTED");
-            requestQueue = Volley.newRequestQueue(this); // This setups up a new request queue which we will need to make HTTP requests.
-            getRepoList();
-
-            if(error){
-                crash("Ocorreu um algum tipo de erro.");
-            }
+            GetReceitasTask myTask = new GetReceitasTask(this);
+            myTask.execute();
 
             int SPLASH_TIME_OUT = 2000;
             new Handler().postDelayed(new Runnable() {
@@ -68,171 +46,15 @@ public class SplashScreen extends AppCompatActivity {
                     finish();
                 }
             }, SPLASH_TIME_OUT);
-        }else {
-            crash("Ocorreu um erro.\nCertifique-se que tem coneção à internet.");
-            System.out.println(">>>>> INTERNET NOT DETECTED");
         }
     }
 
 
-    private void getRepoList() {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                // Create URL
-                try {
-
-                    URL githubEndpoint = new URL(baseUrl);
-
-                    // Create connection
-                    HttpsURLConnection myConnection =
-                            (HttpsURLConnection) githubEndpoint.openConnection();
-
-                    System.out.println(">>>>>>>>>>> antes de responseCode==200");
-                    System.out.println(">>>>>>>>> responseCode == " + myConnection.getResponseCode());
-                    if (myConnection.getResponseCode() == 200) {
-                        // Success
-                        InputStream responseBody = myConnection.getInputStream();
-                        InputStreamReader responseBodyReader =
-                                new InputStreamReader(responseBody, "UTF-8");
-                        JsonReader jsonReader = new JsonReader(responseBodyReader);
-
-                        System.out.println(">>>>>>>>>>> antes de ParseJson()");
-                        parseJson(jsonReader);
-                        if(lista_receitas.size() == 0){
-                            crash("Ocorreu um algum tipo de erro.");
-                        }
-                    } else {
-                        // Error handling code goes here
-                        error = true;
-                        System.out.println(">>>>>>>>>>> else de responseCode==200");
-                    }
-
-                } catch (IOException e) {
-                    error = true;
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    private void parseJson(JsonReader jsonReader) {
-        System.out.println(">>>>>>>>>>>>>>>>> Chegou Aqui");
-        try {
-            lista_receitas = new ArrayList<>();
-            List<String> array;
-            jsonReader.beginArray();
-            while (jsonReader.hasNext()) {
-                Receita new_receita = new Receita();
-                jsonReader.beginObject();
-                while (jsonReader.hasNext()) {
-                    switch (jsonReader.nextName()){
-                        case "id":
-                            new_receita.setId(Long.parseLong(jsonReader.nextString()));
-                            break;
-                        case "nome":
-                            new_receita.setNome(jsonReader.nextString());
-                            break;
-                        case "dificuldade":
-                            new_receita.setDificuldade(Integer.parseInt(jsonReader.nextString()));
-                            break;
-                        case "tempo":
-                            new_receita.setTempo(Integer.parseInt(jsonReader.nextString()));
-                            break;
-                        case "n_ingredientes":
-                            new_receita.setN_ingredientes(Integer.parseInt(jsonReader.nextString()));
-                            break;
-                        case "categoria":
-                            new_receita.setCategoria(jsonReader.nextString());
-                            break;
-                        case "fornecedor":
-                            new_receita.setFornecedor(jsonReader.nextString());
-                            break;
-                        case "imagem":
-                            new_receita.setImagem(jsonReader.nextString());
-                            break;
-                        case "preparacao":
-                            jsonReader.beginArray();
-                            array = new ArrayList<>();
-                            while (jsonReader.hasNext()) {
-                                array.add(jsonReader.nextString());
-                            }
-                            jsonReader.endArray();
-                            new_receita.setPreparacao(array);
-                            break;
-                        case "ingredientes":
-                            jsonReader.beginArray();
-                            array = new ArrayList<>();
-                            while (jsonReader.hasNext()) {
-                                array.add(jsonReader.nextString());
-                            }
-                            jsonReader.endArray();
-                            new_receita.setIngredientes(array);
-                            break;
-                        case "ingredientes_simples":
-                            jsonReader.beginArray();
-                            array = new ArrayList<>();
-                            while (jsonReader.hasNext()) {
-                                array.add(jsonReader.nextString());
-                            }
-                            jsonReader.endArray();
-                            new_receita.setIngredientes_simples(array);
-                            break;
-                        default:
-                            jsonReader.skipValue();
-                    }
-                }
-                jsonReader.endObject();
-                lista_receitas.add(new_receita);
-            }
-            jsonReader.endArray();
-        }catch (IOException e){
-            error = true;
-        }
-
-        System.out.println(">>>>>>>>>>> Sera que chegou aqui?");
-
-        /*
-        private static final String PREFS_NAME = "smartcooking_prefsName";
-        private static final String PREFS_Db_VERSION = "smartcooking_Db_versao";
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-
-        int versao_actual = settings.getInt(PREFS_Db_VERSION, -1);
-
-        if (versao_actual < versao_API) {
-            if(versao_actual!=-1){
-                settings.edit().remove(PREFS_Db_VERSION).apply();
-            }
-            settings.edit().putInt(PREFS_Db_VERSION, versao_API).apply();
-
-            DatabaseOperations operacoesDB = new DatabaseOperations(getApplicationContext());
-            //TODO: operacoesDB.apagarTabelas(DatabaseOperations.TODAS_TABELAS);
-
-            for (int i=0;i<lista_receitas.size();i++){
-                Receita r = lista_receitas.get(i);
-                System.out.println(r);
-                //TODO: operacoesDB.inserirReceita(r);
-            }
-
-        }
-
-        */
-
-        for (int i=0;i<lista_receitas.size();i++){
-            Receita r = lista_receitas.get(i);
-            System.out.println(r);
-        }
-
-
-    }
-
-    private void crash(String tipo){
+    /*private void crash(String tipo){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 SplashScreen.this);
-
         // set title
         alertDialogBuilder.setTitle("Erro");
-
         // set dialog message
         alertDialogBuilder
                 .setMessage(tipo)
@@ -244,13 +66,11 @@ public class SplashScreen extends AppCompatActivity {
                         SplashScreen.this.finish();
                     }
                 });
-
         // create alert dialog
         AlertDialog alertDialog = alertDialogBuilder.create();
-
         // show it
         alertDialog.show();
-    }
+    }*/
 
     private boolean haveNetworkConnection() {
         boolean haveConnectedWifi = false;
