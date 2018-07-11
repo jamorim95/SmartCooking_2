@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import Database.Ingredientes.IngredienteBaseHelper;
 import Database.Ingredientes.IngredienteCursorWrapper;
@@ -59,12 +60,15 @@ public class DatabaseOperations {
         long id_receita = receita.getId();
         List<String> lista_prep = receita.getPreparacao();
         List<String> lista_ingrs_nomes = receita.getIngredientes_simples();
-        System.out.println(receita);
+        List<String> lista_ingrs_quantidades = receita.getIngredientes();
+
+        //System.out.println(receita);
+
+        inserirIngredientes(lista_ingrs_nomes);
 
         // fazer o mapeamento dos nomes dos ingredientes para os respectivos ID's
         List<Integer> lista_ingrs_ID = getListaIngredientesID(lista_ingrs_nomes);
 
-        List<String> lista_ingrs_quantidades = receita.getIngredientes();
 
         // inserir na tabela "Receita"
         ContentValues values_receita = getContentValues_receita(receita);
@@ -75,9 +79,23 @@ public class DatabaseOperations {
             inserirPassoPreparacao(id_receita, i+1, lista_prep.get(i));
         }
 
+        System.out.println(">>>>>>>>>>>>  receita:  " + receita.getIngredientes());
+        System.out.println(">>>>>>>>>>>>  receita:  " + receita.getIngredientes_simples());
+        System.out.println(">>>>>>>>> lista_ingrs_ID:  " + lista_ingrs_ID.size());
+        System.out.println(">>>>>>>>> lista_ingrs_quantidades:  " + lista_ingrs_quantidades.size());
+
+        //TODO: isto em principio está a funcionar se não houver ingredientes repetidos
+
         // inserir ingredientes e respectivas quantidades na tabela "Relaçãi Receita-Ingredientes"
         for(int i=0; i<lista_ingrs_ID.size(); i++){
-            String quantidade = lista_ingrs_quantidades.get(i);
+            String nome_ingr = lista_ingrs_nomes.get(i);
+            String quantidade = "";//lista_ingrs_quantidades.get(i);
+            for(String qtd : lista_ingrs_quantidades){
+                if(qtd.toLowerCase(Locale.getDefault()).contains(nome_ingr.toLowerCase(Locale.getDefault()))){
+                    quantidade=qtd;
+                    break;
+                }
+            }
             inserirRelacaoReceitaIngrediente(id_receita, lista_ingrs_ID.get(i), quantidade);
         }
     }
@@ -120,6 +138,29 @@ public class DatabaseOperations {
         return values;
     }
 
+    private void inserirIngredientes(List<String> nomes){
+        ContentValues values;
+        for(String nome : nomes){
+            if(!existeIngrediente(nome)) {
+                values = getContentValues_ingrediente(nome);
+                mDatabase_ingredientes.insert(IngredienteDbScheme.IngredienteTable.NAME, null, values);
+            }
+        }
+    }
+
+    private ContentValues getContentValues_ingrediente(String nome){
+        ContentValues values = new ContentValues();
+        values.put(IngredienteDbScheme.IngredienteTable.Cols.NOME, nome);
+        return values;
+    }
+
+    private boolean existeIngrediente(String nome){
+        String query_whereClause = "LOWER(" + IngredienteDbScheme.IngredienteTable.Cols.NOME + ") = ?";
+        Cursor c = mDatabase_ingredientes.query(IngredienteDbScheme.IngredienteTable.NAME, null, query_whereClause, new String[]{nome.toLowerCase(Locale.getDefault())}, null, null, null);
+        IngredienteCursorWrapper cursor = new IngredienteCursorWrapper(c);
+
+        return cursor.moveToFirst();
+    }
 
     /************************************/
     /************   APAGAR   ************/
@@ -177,14 +218,18 @@ public class DatabaseOperations {
         String query_whereClause = IngredienteDbScheme.IngredienteTable.Cols.NOME + " = ?";
 
         for(String ingrediente : lista_nomes_ingredientes){
+            System.out.println(">>>>>>>>>>>> ingr: " + ingrediente);
             Cursor c = mDatabase_ingredientes.query(IngredienteDbScheme.IngredienteTable.NAME, null, query_whereClause, new String[]{ingrediente}, null, null, null);
             IngredienteCursorWrapper cursor = new IngredienteCursorWrapper(c);
 
             cursor.moveToFirst();
-            lista_IDs.add(cursor.getIngrediente_ID());
+            int id = cursor.getIngrediente_ID();
+            if(!lista_IDs.contains(id)){
+                lista_IDs.add(id);
+            }
 
         }
-
+        System.out.println(">>>>>>> lista_IDs size:  " + lista_IDs.size());
         return lista_IDs;
     }
 
