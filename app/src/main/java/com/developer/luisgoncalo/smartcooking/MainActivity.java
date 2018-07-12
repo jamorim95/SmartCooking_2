@@ -1,7 +1,9 @@
 package com.developer.luisgoncalo.smartcooking;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,6 +14,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private ListView mDrawerList;
@@ -19,6 +26,12 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<String> mAdapter;
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
+
+    private String PREFS_NAME = "SmartCooking_PrefsName";
+    private String PREFS_LISTA_RECEITAS = "SmartCooking_lista_receitas";
+
+    private ArrayList<Receita> lista_receitas;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +47,15 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        try {
+            lista_receitas = (ArrayList<Receita>) ObjectSerializer.deserialize(sharedPreferences.getString(PREFS_LISTA_RECEITAS, ObjectSerializer.serialize((Serializable) new ArrayList<Receita>())));
+            Toast.makeText(MainActivity.this, lista_receitas.toString(), Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void addDrawerItems() {

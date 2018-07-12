@@ -201,14 +201,14 @@ public class GetReceitasTask extends AsyncTask<String, String, String> {
             error = true;
         }
 
-        DatabaseOperations operacoesDB = new DatabaseOperations(context);
-        operacoesDB.apagarTabelas(DatabaseOperations.TODAS_TABELAS);
+        //DatabaseOperations operacoesDB = new DatabaseOperations(context);
+        //operacoesDB.apagarTabelas(DatabaseOperations.TODAS_TABELAS);
 
-        for (int i=0;i<lista_receitas.size();i++){
+        /*for (int i=0;i<lista_receitas.size();i++){
             Receita r = lista_receitas.get(i);
             System.out.println(r);
-            operacoesDB.inserirReceita(r);
-        }
+            //operacoesDB.inserirReceita(r);
+        }*/
     }
 
     @Override

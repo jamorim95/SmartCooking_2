@@ -2,6 +2,7 @@ package com.developer.luisgoncalo.smartcooking;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
 
+import java.io.Serializable;
 import java.util.List;
 
 import utils.GetReceitasTask;
@@ -18,6 +20,10 @@ public class SplashScreen extends AppCompatActivity {
     private List<Receita> lista_receitas;
     private boolean error = false;
 
+    private String PREFS_NAME = "SmartCooking_PrefsName";
+    private String PREFS_LISTA_RECEITAS = "SmartCooking_lista_receitas";
+
+
     //Carregar aqui as receitas
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +31,16 @@ public class SplashScreen extends AppCompatActivity {
 
         if(haveNetworkConnection()) { // Have internet connection
 
-            GetReceitasTask myTask = new GetReceitasTask(this);
-            myTask.execute();
+            final GetReceitasTask myTask = new GetReceitasTask(this);
+            try {
+                myTask.execute().get();
+                //List<Receita> lista = myTask.getLista_receitas();
+                SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                sharedPreferences.edit().putString(PREFS_LISTA_RECEITAS, ObjectSerializer.serialize((Serializable)myTask.getLista_receitas())).apply();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
 
             int SPLASH_TIME_OUT = 2000;
             new Handler().postDelayed(new Runnable() {
