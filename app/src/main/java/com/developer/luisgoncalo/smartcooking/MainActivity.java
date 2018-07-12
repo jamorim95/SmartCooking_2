@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         try {
             lista_receitas = (ArrayList<Receita>) ObjectSerializer.deserialize(sharedPreferences.getString(PREFS_LISTA_RECEITAS, ObjectSerializer.serialize((Serializable) new ArrayList<Receita>())));
-            //Toast.makeText(MainActivity.this, lista_receitas.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, lista_receitas.toString(), Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             e.printStackTrace();
         }

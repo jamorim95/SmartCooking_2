@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 
 import java.io.Serializable;
@@ -35,9 +36,12 @@ public class SplashScreen extends AppCompatActivity {
             final GetReceitasTask myTask = new GetReceitasTask(this);
             try {
                 myTask.execute().get();
-                //List<Receita> lista = myTask.getLista_receitas();
-                SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-                sharedPreferences.edit().putString(PREFS_LISTA_RECEITAS, ObjectSerializer.serialize((Serializable)myTask.getLista_receitas())).apply();
+                List<Receita> lista = myTask.getLista_receitas();
+                if(lista!=null &&  !lista.isEmpty()) {
+                    SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                    sharedPreferences.edit().putString(PREFS_LISTA_RECEITAS, ObjectSerializer.serialize((Serializable)lista)).commit();
+                    Toast.makeText(SplashScreen.this, "ESCREVEU AS SHARED PREFERENCES!!  " + lista.toString(), Toast.LENGTH_SHORT).show();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
