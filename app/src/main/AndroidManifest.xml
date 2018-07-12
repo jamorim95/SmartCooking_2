@@ -46,9 +46,7 @@
         <activity
             android:name=".FiltrarReceitasActivity"
             android:screenOrientation="portrait" />
-
-
-
+        <activity android:name=".IngredientesActivity"></activity>
     </application>
 
 </manifest>

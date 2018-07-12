@@ -36,12 +36,14 @@ public class GetReceitasTask extends AsyncTask<String, String, String> {
     private boolean error = false;
 
     private List<Receita> lista_receitas;
+    private List<String> lista_ingredientes;
 
     private Context context;
 
     public GetReceitasTask(Context context) {
         contextRef = new WeakReference<>(context);
-        lista_receitas = new ArrayList<>();
+        lista_receitas = new ArrayList<Receita>();
+        lista_ingredientes = new ArrayList<String>();
         this.context = context;
     }
 
@@ -180,11 +182,15 @@ public class GetReceitasTask extends AsyncTask<String, String, String> {
                             jsonReader.endArray();
                             new_receita.setIngredientes(array);
                             break;
-                        case "ingredientes_id":
+                        case "ingredientes_simples":
                             jsonReader.beginArray();
                             array = new ArrayList<>();
                             while (jsonReader.hasNext()) {
-                                array.add(jsonReader.nextString());
+                                String ingrediente = jsonReader.nextString();
+                                array.add(ingrediente);
+                                if(!lista_ingredientes.contains(ingrediente)){
+                                    lista_ingredientes.add(ingrediente);
+                                }
                             }
                             jsonReader.endArray();
                             new_receita.setIngredientes_simples(array);

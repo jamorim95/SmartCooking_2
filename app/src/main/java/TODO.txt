@@ -1,4 +1,3 @@
-- Meter da API para a base de dados
 - O Main
 - O algoritmo da pesquisa de receitas
 - para preencher o dropdown de ingredientes fazer "SELECT * FROM Ingredientes"

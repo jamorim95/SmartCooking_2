@@ -295,7 +295,7 @@ public class DatabaseOperations {
     *  @return arrayList com as receitas encontradas
     *
     * */
-    public ArrayList<Receita> procurarPorIngredientes(ArrayList<Receita> listaGeral, ArrayList<String> ingredientesPesquisados){
+    public ArrayList<Receita> procurarPorIngredientes(List<Receita> listaGeral, ArrayList<String> ingredientesPesquisados){
 
         ArrayList<Receita> lista = new ArrayList<Receita>();
         HashMap<Double, ArrayList<Receita>> mapa = new HashMap<Double, ArrayList<Receita>>();
@@ -304,7 +304,7 @@ public class DatabaseOperations {
         int num_not_match;      // nº de ingredientes da receita SEM match na pesquisa
         int num_TOTAL_ingrs;    // nº TOTAL de ingredientes da receita
 
-        double coeficiente_oredenacao;  // (num_match - num_NOT_match) / num_TOTAL_ingrs
+        double coeficiente_ordenacao;  // (num_match - num_NOT_match) / num_TOTAL_ingrs
         ArrayList<Double> lista_coefecientes_ordenacao = new ArrayList<Double>();
 
         ArrayList<Receita> aux_listaReceitas;
@@ -325,16 +325,16 @@ public class DatabaseOperations {
             if(num_match > 0){
                 // se esta receita tiver pelo menos 1 ingrediente com match na pesquisa
 
-                coeficiente_oredenacao = (num_match - num_not_match) / num_TOTAL_ingrs;
+                coeficiente_ordenacao = (num_match - num_not_match) / num_TOTAL_ingrs;
 
-                if(mapa.containsKey(coeficiente_oredenacao)){
-                    aux_listaReceitas=mapa.get(coeficiente_oredenacao);
+                if(mapa.containsKey(coeficiente_ordenacao)){
+                    aux_listaReceitas=mapa.get(coeficiente_ordenacao);
                 }else{
                     aux_listaReceitas = new ArrayList<Receita>();
-                    lista_coefecientes_ordenacao.add(coeficiente_oredenacao);
+                    lista_coefecientes_ordenacao.add(coeficiente_ordenacao);
                 }
                 aux_listaReceitas.add(r);
-                mapa.put(coeficiente_oredenacao, aux_listaReceitas);
+                mapa.put(coeficiente_ordenacao, aux_listaReceitas);
 
             }
         }

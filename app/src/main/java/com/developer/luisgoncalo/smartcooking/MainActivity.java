@@ -13,7 +13,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -33,15 +36,95 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Receita> lista_receitas;
 
+    private Button maisIngredientes;
+    private Button menosIngredientes;
+    private int nIngredientesPesquisa;
+
+    private Spinner[] listas_ingredientes;
+    private LinearLayout layout_spinners;
+
+    private Button search_button;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        search_button = (Button) findViewById(R.id.search_button);
+        search_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ArrayList<String> ingrs = new ArrayList<String>();
+                boolean flag=true;
+                for(int i=0; i<nIngredientesPesquisa; i++){
+                    Spinner sp = listas_ingredientes[i];
+                    if(sp.getSelectedItemPosition()==0){
+                        Toast.makeText(MainActivity.this, "Tem que selecionar todos os ingredientes ou diminuir o tamanho da pesquisa.", Toast.LENGTH_LONG).show();
+                        flag=false;
+                        break;
+                    }else{
+                        ingrs.add((String) sp.getSelectedItem());
+                    }
+                }
+                if(flag){
+                    Intent i=new Intent(MainActivity.this, IngredientesActivity.class);
+                    i.putExtra("lista_ingrs", ingrs);
+                    startActivity(i);
+                }
+            }
+        });
+
+        listas_ingredientes = new Spinner[5];
+        listas_ingredientes[0]=(Spinner) findViewById(R.id.ingr_spinner1);
+        listas_ingredientes[1]=(Spinner) findViewById(R.id.ingr_spinner2);
+        listas_ingredientes[2]=(Spinner) findViewById(R.id.ingr_spinner3);
+        listas_ingredientes[3]=(Spinner) findViewById(R.id.ingr_spinner4);
+        listas_ingredientes[4]=(Spinner) findViewById(R.id.ingr_spinner5);
+
+        layout_spinners = (LinearLayout) findViewById(R.id.layout_spinners);
+
+
+        nIngredientesPesquisa=5;
+
         mDrawerList = findViewById(R.id.navList);
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
+
+        maisIngredientes = (Button) findViewById(R.id.more_ingr);
+        menosIngredientes = (Button) findViewById(R.id.less_ingr);
+        maisIngredientes.setEnabled(false);
+
+        maisIngredientes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(nIngredientesPesquisa<5){
+                    nIngredientesPesquisa++;
+                    Toast.makeText(MainActivity.this, "CHEGOU AO LISTENER MAIS:  " + (nIngredientesPesquisa-1), Toast.LENGTH_LONG).show();
+                    layout_spinners.addView((View)listas_ingredientes[nIngredientesPesquisa-1].getParent());
+                    if(nIngredientesPesquisa==5){
+                        maisIngredientes.setEnabled(false);
+                    }
+                    menosIngredientes.setEnabled(true);
+                }
+            }
+        });
+
+        menosIngredientes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(nIngredientesPesquisa>1){
+                    layout_spinners.removeView((View)listas_ingredientes[nIngredientesPesquisa-1].getParent());
+                    Toast.makeText(MainActivity.this, "CHEGOU AO LISTENER MENOS:  " + (nIngredientesPesquisa-1), Toast.LENGTH_LONG).show();
+                    nIngredientesPesquisa--;
+
+                    maisIngredientes.setEnabled(true);
+                    if(nIngredientesPesquisa==1){
+                        menosIngredientes.setEnabled(false);
+                    }
+                }
+            }
+        });
 
         addDrawerItems();
         setupDrawer();
