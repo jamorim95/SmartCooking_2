@@ -385,7 +385,7 @@ public class DatabaseOperations {
      *  @return arrayList com as receitas encontradas
      *
      * */
-    public ArrayList<Receita> procurarPorCategoria(ArrayList<Receita> listaGeral, String categoria){
+    public ArrayList<Receita> procurarPorCategoria(List<Receita> listaGeral, String categoria){
         ArrayList<Receita> lista = new ArrayList<Receita>();
 
         for(Receita r : listaGeral){
@@ -395,6 +395,43 @@ public class DatabaseOperations {
         }
 
         return lista;
+    }
+
+    /*
+     *  @param listaGeral arrayList com todas as receitas da base de dados
+     *  @return arrayList com todos os ingredientes que existem na ArrayList das SharedPreferences
+     *
+     * */
+    public String[] getListaNomeIngredientes(List<Receita> listaGeral){
+        ArrayList<String> lista = new ArrayList<String>();
+        for(Receita r : listaGeral){
+            for(String ingr : r.getIngredientes_simples()){
+                if(lista.contains(ingr)){
+                    continue;
+                }
+                lista.add(ingr);
+            }
+        }
+        String[] aux=getStringArray(lista);
+        Arrays.sort(aux);
+        return appendFirstElement(aux);
+    }
+
+    private String[] getStringArray(ArrayList<String> lista){
+        String[] target = new String[lista.size()];
+        for (int i = 0; i < target.length; i++) {
+            target[i] = lista.get(i);
+        }
+        return target;
+    }
+
+    private String[] appendFirstElement(String[] array){
+        String[] aux = new String[array.length+1];
+        aux[0] = "Selecione um ingrediente";
+        for(int i=0; i<array.length; i++){
+            aux[i+1] = array[i];
+        }
+        return aux;
     }
 
 

@@ -21,7 +21,9 @@ import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
+import Database.DatabaseOperations;
 import utils.ObjectSerializer;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout layout_spinners;
 
     private Button search_button;
+    private  List<String> lista_ingrs_bd;
+    private DatabaseOperations operacoesDB;
 
 
     @Override
@@ -126,26 +130,36 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        try {
+            lista_receitas = (ArrayList<Receita>) ObjectSerializer.deserialize(sharedPreferences.getString(PREFS_LISTA_RECEITAS, ObjectSerializer.serialize((Serializable) new ArrayList<Receita>())));
+            Toast.makeText(MainActivity.this, lista_receitas.toString(), Toast.LENGTH_LONG).show();
+            operacoesDB = new DatabaseOperations(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         addDrawerItems();
         setupDrawer();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        try {
-            lista_receitas = (ArrayList<Receita>) ObjectSerializer.deserialize(sharedPreferences.getString(PREFS_LISTA_RECEITAS, ObjectSerializer.serialize((Serializable) new ArrayList<Receita>())));
-            Toast.makeText(MainActivity.this, lista_receitas.toString(), Toast.LENGTH_LONG).show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
 
     }
 
     private void addDrawerItems() {
-        String osArray[] = getResources().getStringArray(R.array.menu);
+        //String osArray[] = getResources().getStringArray(R.array.menu);
+        //mAdapter = new ArrayAdapter<>(this, R.layout.menu, osArray);
 
-        mAdapter = new ArrayAdapter<>(this, R.layout.menu, osArray);
+        //Toast.makeText(this, "lista:  " + lista_ingrs_bd.size(), Toast.LENGTH_LONG).show();
+
+        mAdapter = new ArrayAdapter<>(this, R.layout.menu, operacoesDB.getListaNomeIngredientes(lista_receitas));
+        mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        for(Spinner sp : listas_ingredientes){
+            sp.setAdapter(mAdapter);
+        }
         mDrawerList.setAdapter(mAdapter);
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import Database.DatabaseOperations;
 import utils.ObjectSerializer;
 
 public class FiltrarReceitasActivity extends AppCompatActivity {
@@ -60,11 +61,8 @@ public class FiltrarReceitasActivity extends AppCompatActivity {
         try {
             receitas= (ArrayList<Receita>) ObjectSerializer.deserialize(sharedPreferences.getString(PREFS_LISTA_RECEITAS, ObjectSerializer.serialize((Serializable) new ArrayList<Receita>())));
 
-            for(Receita r: receitas){
-                if(r.getCategoria().toLowerCase(Locale.getDefault()).equals(categoria.toLowerCase(Locale.getDefault()))){
-                    res.add(r);
-                }
-            }
+            DatabaseOperations operacoesDB = new DatabaseOperations(this);
+            res=operacoesDB.procurarPorCategoria(receitas, categoria);
         } catch (Exception e) {
             e.printStackTrace();
         }

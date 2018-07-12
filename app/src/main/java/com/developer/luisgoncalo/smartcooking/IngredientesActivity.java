@@ -11,7 +11,6 @@ import android.widget.ListView;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import Database.DatabaseOperations;
 import utils.ObjectSerializer;
@@ -46,7 +45,7 @@ public class IngredientesActivity extends AppCompatActivity {
         lista_ingrs = (ArrayList<String>) getIntent().getSerializableExtra("lista_ingrs");
 
         // Adding items to listview
-        List<Receita> receitas = criarReceitas(); //Get receitas por categoria
+        List<Receita> receitas = criarReceitas();
         adapter = new MyAdapter(receitas, this,IngredientesActivity.this);
         lista_receitas.setAdapter(adapter);
     }
