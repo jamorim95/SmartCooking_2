@@ -2,6 +2,7 @@ package com.developer.luisgoncalo.smartcooking;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -18,12 +19,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import utils.ObjectSerializer;
+
 
 public class PesquisaActivity extends AppCompatActivity {
+
+    private String PREFS_NAME = "SmartCooking_PrefsName";
+    private String PREFS_LISTA_RECEITAS = "SmartCooking_lista_receitas";
 
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
@@ -82,6 +89,12 @@ public class PesquisaActivity extends AppCompatActivity {
 
         // Adding items to listview
         List<Receita> receitas = new ArrayList<>();
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        try {
+            receitas = (ArrayList<Receita>) ObjectSerializer.deserialize(sharedPreferences.getString(PREFS_LISTA_RECEITAS, ObjectSerializer.serialize((Serializable) new ArrayList<Receita>())));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         adapter = new MyAdapter(receitas, this,PesquisaActivity.this);
         lista_receitas.setAdapter(adapter);
 

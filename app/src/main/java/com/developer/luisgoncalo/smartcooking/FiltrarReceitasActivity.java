@@ -1,6 +1,8 @@
 package com.developer.luisgoncalo.smartcooking;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -8,11 +10,19 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+
+import utils.ObjectSerializer;
 
 public class FiltrarReceitasActivity extends AppCompatActivity {
+
+    private String PREFS_NAME = "SmartCooking_PrefsName";
+    private String PREFS_LISTA_RECEITAS = "SmartCooking_lista_receitas";
+
     private String categoria;
     private ArrayList<Receita> receitas;
 
@@ -44,10 +54,21 @@ public class FiltrarReceitasActivity extends AppCompatActivity {
     }
 
     private List<Receita> criarReceitas() {
-        return new ArrayList<>(Arrays.asList(
-            new Receita(1,"Tostas de Frango no Forno",15,3,"Snack", Arrays.asList("Levar um tacho ao lume com a cebola picada e uma colher de sopa de azeite e deixar refogar","Acrescentar o frango desfiado e envolver bem.","Polvilhar com a farinha e junte o leite.","Deixar cozinhar, mexendo sempre de modo a ficar com uma espécie de creme.","Temperar com sal, pimenta e reserve.","Rechear duas fatias de pão com o creme de frango e cubra com o queijo.","Tapar com a outra fatia de pão e leve à tostadeira para tostar o pão e derreter o queijo.","Servir ainda quente."),"https://smartcookingapp.files.wordpress.com/2015/10/receita_pgi.jpg"),
-            new Receita(2,"Salsichas com Queijo e Fiambre",15,3,"Carne", Arrays.asList("Estender uma fatia de fiambre e, por cima colocar uma fatia de queijo.|Barrar o queijo com a mostarda a seu gosto.","Colocar a salsicha por cima e enrolar nas fatias.","Polvilhar as salsichas enroladas com o queijo mozzarella.","Colocar no forno e deixe ficar até gratinar o queijo e está pronto a servir!"),"https://smartcookingapp.files.wordpress.com/2015/10/sals.jpg")
-        ));
+        List<Receita> receitas;
+        List<Receita> res = new ArrayList<Receita>();
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        try {
+            receitas= (ArrayList<Receita>) ObjectSerializer.deserialize(sharedPreferences.getString(PREFS_LISTA_RECEITAS, ObjectSerializer.serialize((Serializable) new ArrayList<Receita>())));
+
+            for(Receita r: receitas){
+                if(r.getCategoria().toLowerCase(Locale.getDefault()).equals(categoria.toLowerCase(Locale.getDefault()))){
+                    res.add(r);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return res;
     }
 
     @Override

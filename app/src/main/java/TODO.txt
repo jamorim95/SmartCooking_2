@@ -2,3 +2,4 @@
 - O Main
 - O algoritmo da pesquisa de receitas
 - para preencher o dropdown de ingredientes fazer "SELECT * FROM Ingredientes"
+- pôr imagem no icon da receita nas pesquisas
