@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import utils.GetReceitasTask;
+import utils.ObjectSerializer;
 
 public class SplashScreen extends AppCompatActivity {
 

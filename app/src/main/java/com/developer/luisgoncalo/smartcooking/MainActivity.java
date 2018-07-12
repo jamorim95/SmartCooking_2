@@ -14,11 +14,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import utils.ObjectSerializer;
 
 public class MainActivity extends AppCompatActivity {
     private ListView mDrawerList;
