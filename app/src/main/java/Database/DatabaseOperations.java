@@ -233,17 +233,55 @@ public class DatabaseOperations {
         return lista_IDs;
     }
 
+    public List<String> getListaNomeIngredientes(){
+        List<String> lista_ingrs = new ArrayList<String>();
+
+        Cursor c = mDatabase_ingredientes.query(IngredienteDbScheme.IngredienteTable.NAME, null, null, null, null, null, null);
+        IngredienteCursorWrapper cursor = new IngredienteCursorWrapper(c);
+
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()){
+            lista_ingrs.add(cursor.getIngrediente()[1]);
+            cursor.moveToNext();
+        }
+
+        return lista_ingrs;
+    }
+
 
     /***********************************/
     /************   CLOSE   ************/
     /***********************************/
 
 
-    public void closeAllDatabases(){
-        mDatabase_receitas.close();
-        mDatabase_ingredientes.close();
-        mDatabase_relacaoReceitaIngredientes.close();
-        mDatabase_relacaoReceitaPreparacao.close();
+    public boolean closeAllDatabases(int tabela){
+        boolean res = true;
+        switch(tabela){
+            case TODAS_TABELAS:
+                mDatabase_receitas.close();
+                mDatabase_ingredientes.close();
+                mDatabase_relacaoReceitaIngredientes.close();
+                mDatabase_relacaoReceitaPreparacao.close();
+                break;
+            case TABELA_RECEITAS:
+                mDatabase_receitas.close();
+                break;
+            case TABELA_INGREDIENTES:
+                mDatabase_ingredientes.close();
+                break;
+            case TABELA_RELACAO_RECEITA_INGREDIENTES:
+                mDatabase_relacaoReceitaIngredientes.close();
+                break;
+            case TABELA_RELACAO_RECEITA_PREPARACAO:
+                mDatabase_relacaoReceitaPreparacao.close();
+                break;
+            default:
+                //TODO: gerar erro
+                res = false;
+                break;
+        }
+
+        return res;
     }
 
 
