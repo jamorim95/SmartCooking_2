@@ -160,6 +160,8 @@ public class MainActivity extends AppCompatActivity {
         for(Spinner sp : listas_ingredientes){
             sp.setAdapter(mAdapter);
         }
+        String osArray[] = getResources().getStringArray(R.array.menu);
+        mAdapter = new ArrayAdapter<>(this, R.layout.menu, osArray);
         mDrawerList.setAdapter(mAdapter);
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
